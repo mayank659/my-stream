@@ -34,7 +34,7 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/join" element={ <Join/>}/>
             <Route path="/create" element={ <Create socket={socket}/>}/>
-            <Route path="/room" element={ <Room socket={socket}/>}/>
+            <Route path="/room/:roomId" element={ <Room socket={socket}/>}/>
           </Routes>
           </BrowserRouter>
       </div>
