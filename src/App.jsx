@@ -6,8 +6,13 @@ import Create from "./component/Create";
 import Room from "./component/Room";
 import {BrowserRouter , Routes ,Route } from "react-router-dom"
 import "./App.css";
-const socket = io(import.meta.env.VITE_BACKEND_URL, {
-  transports: ["websocket"],
+const socket = io(import.meta.env.VITE_BACKEND_URL);
+socket.on("connect", () => {
+  console.log("Connected:", socket.id);
+});
+
+socket.on("connect_error", (err) => {
+  console.log("Connect Error:", err);
 });
 console.log(import.meta.env.VITE_BACKEND_URL);
 function App() {
