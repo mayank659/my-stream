@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { data, useParams } from "react-router-dom";
 import YouTube from "react-youtube";
 import Nav from "./room/Nav";
-import arrow from "../assets/arrow.png";
+import Chat from "./room/Chat";
 export default function Room({ socket }) {
   const [name, setname] = useState([]);
   const [host, sethost] = useState("");
@@ -170,7 +170,7 @@ export default function Room({ socket }) {
       {/*  Users List */} {/* First div */}
       <Nav user={name} host={host} side={side} name={name} />
       {/* second div */}
-      <div className="md:w-[80%] w-full flex relative  flex-col items-center md:justify-center justify-between self-baseline  md:p-3">
+      <div className="md:w-[80%] w-full flex  flex-col items-center md:justify-center justify-between self-baseline  md:p-3">
         {/* roomId */}
 
         <div className="border-b-gray-950 border-2 border-t-0 border-l-0 border-r-0 px-2 w-full flex items-center md:justify-center justify-between">
@@ -220,17 +220,10 @@ export default function Room({ socket }) {
             Play
           </button>
         </div>
-            <div className="w-full flex flex-col gap-2 items-center justify-center">
-              {/* chat screen */}
-                <div className="w-full border border-gray-950 md:h-93 h-65 rounded-2xl"></div>
+        
+       {/*  chat section */}
 
-                {/* Input box */}
-               <div className="w-full flex p-2 justify-center gap-3">
-               <input type="text" className="border border-white rounded-4xl w-full text-[18px] p-2 px-5  outline-0"></input>
-                <img src={arrow} className="h-10 w-10 cursor-pointer bg-white rounded-[50%]" onClick={() => {}}></img>
-                </div>
-
-            </div>
+            <Chat username={username} socket={socket}/>
         
 
       </div>

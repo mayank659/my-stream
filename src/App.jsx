@@ -6,7 +6,9 @@ import Create from "./component/Create";
 import Room from "./component/Room";
 import {BrowserRouter , Routes ,Route } from "react-router-dom"
 import "./App.css";
+
 const socket = io(import.meta.env.VITE_BACKEND_URL);
+/* const socket = io("http://127.0.0.1:5000" ); */
 socket.on("connect", () => {
   console.log("Connected:", socket.id);
 });
