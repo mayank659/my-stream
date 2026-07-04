@@ -6,8 +6,10 @@ import Create from "./component/Create";
 import Room from "./component/Room";
 import {BrowserRouter , Routes ,Route } from "react-router-dom"
 import "./App.css";
-const socket = io("http://127.0.0.1:5000");
-
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
+  transports: ["websocket"],
+});
+console.log(import.meta.env.VITE_BACKEND_URL);
 function App() {
   const [message, setmessage] = useState("");
   const [text, settext] = useState("");
