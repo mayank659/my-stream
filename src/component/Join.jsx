@@ -7,6 +7,7 @@ export default function Join() {
   const [joinid,setjoinid] = useState("")
   const navigate = useNavigate()
   const joinhandle = () => {
+    if(joinname.trim() === "") return;
     localStorage.setItem("username",joinname)
     navigate(`/room/${joinid}`)
   }
