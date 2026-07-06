@@ -8,6 +8,8 @@ export default function Chat({username,socket}){
     const [disconnect,setdisconnect] = useState([])
     const chatBoxRef = useRef(null)
     const {roomId} = useParams()
+    const [isTyping, setIsTyping] = useState(false);
+    const [typingdata, settypingdata] = useState("");
     useEffect(() => {
     chatBoxRef.current?.scrollIntoView({ behavior: 'smooth' })
 
@@ -17,10 +19,21 @@ export default function Chat({username,socket}){
       setMsg((prev) => [...prev, data]);
     }
     
+    const typing = (data) => {
+        console.log(data.username + " is typing...")
+        setIsTyping(true)
+        settypingdata(data.username)
+        setTimeout(() => {
+            setIsTyping(false)
+        }, 5000)
+    }
+
       socket.on("receive_message", recieveMessage)
-      
+      socket.on("user_is_typing", typing)
+
         return () => {
             socket.off("receive_message",recieveMessage);
+            socket.off("user_is_typing", typing)
             
         }
     },[socket]);
@@ -36,6 +49,13 @@ export default function Chat({username,socket}){
     setText("");
     };
 
+    const istyping = () => {
+        socket.emit("typing", {
+            "username": username,
+            "room_id": roomId
+        });
+    };
+
   return (
     <div className="w-full flex flex-col gap-2 items-center justify-center">
                   {/* chat screen */}
@@ -48,12 +68,15 @@ export default function Chat({username,socket}){
                             </div>
                         </div>
                     ))}
+                    {isTyping && (
+                        <p className='text-center text-[15px]'>{typingdata} is typing ...</p>
+                    )}
                     <div className="bottom" ref={chatBoxRef}></div>
         </div>
     
                 {/* Input box */}
         <div className="w-full flex p-2 justify-center gap-3">
-        <input type="text" className="border border-white rounded-4xl w-full text-[15px] md:text-[18px] p-2 px-5  outline-0" value={text} onChange={(e) => setText(e.target.value)}
+        <input type="text" className="border border-white rounded-4xl w-full text-[15px] md:text-[18px] p-2 px-5  outline-0" value={text} onChange={(e) => {setText(e.target.value); istyping();}}
         onKeyDown={(e)=>{
             if(e.key === "Enter"){
                 sendMessage();

@@ -8,6 +8,7 @@ export default function Room({ socket }) {
   const [host, sethost] = useState("");
   const [roomid, setroomid] = useState("");
   const [ytid, setytid] = useState("");
+  const [error, seterror] = useState(false);
   const [side, setside] = useState(false);
   const [url, seturl] = useState("");
   const username = localStorage.getItem("username");
@@ -106,12 +107,16 @@ export default function Room({ socket }) {
       
     }
 
+    const errorHandler = (data) => {
+      seterror(true);
+    }
+
     socket.on("video_state_changed", handleVideoChange);
     socket.on("video_seeked", handleVideoSeeked);
     socket.on("video_changed", handleChangeVideo);
     socket.on("video_time_updated", videoTimeUpdate);
     socket.on("sync_video", syncVideo);
-
+    socket.on("error", errorHandler);
     return () => {
       socket.off("connect", join);
       socket.off("userupdate");
@@ -120,6 +125,7 @@ export default function Room({ socket }) {
       socket.off("video_changed", handleChangeVideo);
       socket.off("video_time_updated", videoTimeUpdate);
       socket.off("sync_video", syncVideo);
+      socket.off("error", errorHandler);
       clearInterval(interval)
     };
   }, [socket, roomId, username]);
@@ -226,7 +232,18 @@ export default function Room({ socket }) {
             <Chat username={username} socket={socket}/>
         
 
+
       </div>
+
+
+         {/* ERROR */}
+
+      {error && <div className="fixed h-dvh w-full bg-gray-900 flex flex-col items-center justify-center">
+        <p>Room Not Found ⚠️</p>
+        <p className="text-[15px]">Please check the room ID or <font color="red">Refresh the page.</font></p>
+        </div>
+      }
+
     </div>
   );
 }
