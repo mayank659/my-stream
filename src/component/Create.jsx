@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom"
 import { useState ,useEffect } from 'react'
 export default function Create({socket}) {
   const [crname,setcrname] = useState("")
+  const [loading,setloading] = useState(false)
 
    const navigate = useNavigate()
 
@@ -26,6 +27,7 @@ export default function Create({socket}) {
         return;
       }
       else{
+        setloading(true)
         socket.emit("create_room",crname)
       }
    }
@@ -37,6 +39,16 @@ export default function Create({socket}) {
                 setcrname(e.target.value)
             }}/>
             <button className="bg-gray-950 text-white text-2xl w-70 py-3 cursor-pointer" onClick={handlecreate}>Create</button>
+             
+             {/* rotate wheel */}
+            
+            {loading && (
+              <div className="fixed h-dvh w-full bg-gray-900 flex items-center flex-col gap-4 justify-center">
+                <div className="wheel p-3 bg-transparent border-5 border-t-amber-50 rounded-full animate-spin border-transparent"></div>
+                <p className='text-white'>Please wait</p>
+              </div>
+            )}
+
           </div>
   )
 }
