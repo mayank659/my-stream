@@ -9,6 +9,7 @@ export default function Room({ socket }) {
   const [roomid, setroomid] = useState("");
   const [ytid, setytid] = useState("");
   const [error, seterror] = useState(false);
+  const [loading, setloading] = useState(true);
   const [side, setside] = useState(false);
   const [url, seturl] = useState("");
   const username = localStorage.getItem("username");
@@ -18,6 +19,7 @@ export default function Room({ socket }) {
 
   useEffect(() => {
     const join = () => {
+      setloading(false);
       socket.emit("join_room", {
         username: username,
         room_id: roomId,
@@ -243,6 +245,14 @@ export default function Room({ socket }) {
         <p className="text-[15px]">Please check the room ID or <font color="red">Refresh the page.</font></p>
         </div>
       }
+
+      {/* loading screen */}
+      {loading && (
+        <div className="fixed h-dvh w-full bg-gray-900 flex items-center flex-col gap-4 justify-center">
+          <div className="wheel p-3 bg-transparent border-5 border-t-amber-50 rounded-full animate-spin border-transparent"></div>
+          <p className='text-white'>Please wait</p>
+        </div>
+      )}
 
     </div>
   );
