@@ -16,8 +16,22 @@ export default function Room({ socket }) {
   const { roomId } = useParams();
   const player = useRef(null);
   const syncing = useRef(false);
-
+  const [crname,setcrname] = useState("");
+  const [usernull,setusernull] = useState(false)
+  const fillnull = () => {
+    console.log(crname)
+      localStorage.setItem("username",crname)
+      location.reload()
+    }
   useEffect(() => {
+    if (username == null) {
+        setusernull(true)
+        console.log("true")
+        return;
+    }
+    else {
+        setusernull(false)
+    }
     const join = () => {
       setloading(false);
       socket.emit("join_room", {
@@ -96,7 +110,6 @@ export default function Room({ socket }) {
 
     const syncVideo = (data) => {
       setytid(data.video.id);
-      console.log("syncing video", data);
       setTimeout(() => {
         if(!player.current) return;
       player.current.seekTo(data.video.current, true);
@@ -253,6 +266,19 @@ export default function Room({ socket }) {
           <p className='text-white'>Please wait</p>
         </div>
       )}
+
+      {/* Enter null user name */}
+      {usernull && <div className="fixed h-dvh w-full bg-gray-900 flex items-center flex-col gap-4 justify-center">
+
+        <div className="flex flex-col gap-7  items-center justify-center">
+          
+        <h1 className="md:text-4xl text-2xl text-white maya">Enter Name</h1>
+        <input type="text" className="border text-black border-gray-950 md:text-2xl bg-white outline-0  ps-3 pe-3 w-70 py-2" placeholder="Enter name" value={crname} onChange={(e)=>{
+                setcrname(e.target.value)
+            }}/>
+            <button className="bg-gray-950 text-white text-2xl w-70 py-3 cursor-pointer" onClick={fillnull}>Join</button>
+      </div>
+      </div>}
 
     </div>
   );
