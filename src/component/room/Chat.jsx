@@ -39,6 +39,7 @@ export default function Chat({username,socket}){
     },[socket]);
     
     const sendMessage = () => {
+    fullscreen();
     if (text.trim() === "") return;
     console.log(username)
     socket.emit("send_message", {
@@ -47,6 +48,23 @@ export default function Chat({username,socket}){
         "room_id": roomId
     });
     setText("");
+    };
+
+    const fullscreen = async() => {
+        const elem = document.documentElement;
+        try {
+            if (elem.requestFullscreen) {
+                await elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { /* Firefox */
+                await elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                await elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                await elem.msRequestFullscreen();
+            }
+        } catch (error) {
+            console.error("Error attempting to enable full-screen mode:", error);
+        }
     };
 
     const istyping = () => {
@@ -76,7 +94,7 @@ export default function Chat({username,socket}){
     
                 {/* Input box */}
         <div className="w-full flex p-2 justify-center gap-3">
-        <input type="text" className="border border-white rounded-4xl w-full text-[15px] md:text-[18px] p-2 px-5  outline-0" value={text} onChange={(e) => {setText(e.target.value); istyping();}}
+        <input type="text" className="border  border-white rounded-4xl w-full text-[15px] md:text-[18px] p-2 px-5  outline-0" value={text} onChange={(e) => {setText(e.target.value); istyping();}}
         onKeyDown={(e)=>{
             if(e.key === "Enter"){
                 sendMessage();
