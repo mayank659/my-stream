@@ -39,7 +39,6 @@ export default function Chat({username,socket}){
     },[socket]);
     
     const sendMessage = () => {
-    fullscreen();
     if (text.trim() === "") return;
     console.log(username)
     socket.emit("send_message", {
@@ -77,7 +76,7 @@ export default function Chat({username,socket}){
   return (
     <div className="w-full flex flex-col gap-2 items-center justify-center">
                   {/* chat screen */}
-        <div className="w-full border border-gray-950 md:h-93 h-65 rounded-2xl overflow-x-auto scrollbar-none">
+        <div className="w-full border border-gray-950 h-[calc(100vh-25rem)] rounded-2xl overflow-x-hidden overflow-y-auto scrollbar-none">
                     {msg.map((message, index) => (
                         <div key={index} className={"flex justify-start p-2"}>
                             <div className="rounded-lg p-2 bg-gray-950 text-white">
