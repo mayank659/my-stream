@@ -16,7 +16,6 @@ socket.on("connect", () => {
 socket.on("connect_error", (err) => {
   console.log("Connect Error:", err);
 });
-console.log(import.meta.env.VITE_BACKEND_URL);
 function App() {
   const [message, setmessage] = useState("");
   const [text, settext] = useState("");
