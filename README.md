@@ -38,11 +38,10 @@ The backend URL is configured using the `VITE_BACKEND_URL` environment variable.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/my-stream.git
+git clone https://github.com/mayank659/my-stream.git
 cd my-stream
 ```
 
-Replace `YOUR_USERNAME` and `my-stream` with your actual GitHub username and repository name.
 
 ### 2. Install Dependencies
 
