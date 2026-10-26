@@ -82,7 +82,7 @@ my-stream/
 └── README.md
 ```
 
-*Note: The structure above is an example. Actual files may differ.*
+
 
 ## 🎯 Project Goal
 
