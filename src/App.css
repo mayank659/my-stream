@@ -11,3 +11,9 @@
 .header{
   padding-top: env(safe-area-inset-top, 0px);
 }
+html, body {
+  height: 100%;
+  overflow: hidden; /* Page ko naturally scroll hone se roko */
+  position: fixed;   /* iOS/Android me bounce aur sliding band karne ke liye */
+  width: 100%;
+}
