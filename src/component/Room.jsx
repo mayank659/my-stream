@@ -16,21 +16,20 @@ export default function Room({ socket }) {
   const { roomId } = useParams();
   const player = useRef(null);
   const syncing = useRef(false);
-  const [crname,setcrname] = useState("");
-  const [usernull,setusernull] = useState(false)
+  const [crname, setcrname] = useState("");
+  const [usernull, setusernull] = useState(false);
   const fillnull = () => {
-    console.log(crname)
-      localStorage.setItem("username",crname)
-      location.reload()
-    }
+    console.log(crname);
+    localStorage.setItem("username", crname);
+    location.reload();
+  };
   useEffect(() => {
     if (username == null) {
-        setusernull(true)
-        console.log("true")
-        return;
-    }
-    else {
-        setusernull(false)
+      setusernull(true);
+      console.log("true");
+      return;
+    } else {
+      setusernull(false);
     }
     const join = () => {
       setloading(false);
@@ -51,7 +50,7 @@ export default function Room({ socket }) {
       setname(data.users);
     });
 
-   const interval = setInterval(() => {
+    const interval = setInterval(() => {
       if (!player.current) return;
 
       socket.emit("time_update", {
@@ -61,7 +60,7 @@ export default function Room({ socket }) {
     }, 5000);
 
     const handleVideoChange = (data) => {
-      if(!player.current) return;
+      if (!player.current) return;
       syncing.current = true;
       if (data.video.play) {
         player.current.playVideo();
@@ -84,21 +83,21 @@ export default function Room({ socket }) {
           syncing.current = false;
         }, 200);
       }
-    }
+    };
 
     const handleVideoSeeked = (data) => {
-      if(!player.current) return;
+      if (!player.current) return;
       syncing.current = true;
-        player.current.seekTo(data.video.current, true);
-        setTimeout(() => {
-          syncing.current = false;
-        }, 200);
+      player.current.seekTo(data.video.current, true);
+      setTimeout(() => {
+        syncing.current = false;
+      }, 200);
     };
 
     const handleChangeVideo = (data) => {
       setytid(data.video.id);
       setTimeout(() => {
-        if(!player.current) return;
+        if (!player.current) return;
         player.current.seekTo(data.video.current, true);
         if (data.video.play) {
           player.current.playVideo();
@@ -106,25 +105,24 @@ export default function Room({ socket }) {
           player.current.pauseVideo();
         }
       }, 600);
-    }
+    };
 
     const syncVideo = (data) => {
       setytid(data.video.id);
       setTimeout(() => {
-        if(!player.current) return;
-      player.current.seekTo(data.video.current, true);
-      if(data.video.play) {
-        player.current.playVideo();
-      }else{
-        player.current.pauseVideo();
-      }
+        if (!player.current) return;
+        player.current.seekTo(data.video.current, true);
+        if (data.video.play) {
+          player.current.playVideo();
+        } else {
+          player.current.pauseVideo();
+        }
       }, 500);
-      
-    }
+    };
 
     const errorHandler = (data) => {
       seterror(true);
-    }
+    };
 
     socket.on("video_state_changed", handleVideoChange);
     socket.on("video_seeked", handleVideoSeeked);
@@ -141,7 +139,7 @@ export default function Room({ socket }) {
       socket.off("video_time_updated", videoTimeUpdate);
       socket.off("sync_video", syncVideo);
       socket.off("error", errorHandler);
-      clearInterval(interval)
+      clearInterval(interval);
     };
   }, [socket, roomId, username]);
 
@@ -179,12 +177,11 @@ export default function Room({ socket }) {
   const StateChange = (event) => {
     if (syncing.current) return;
     if (event.data !== 1 && event.data !== 2) return;
-      socket.emit("video_state_change", {
-        state: event.data,
-        room_id: roomId,
-        current_time: player.current.getCurrentTime(),
-      });
-    
+    socket.emit("video_state_change", {
+      state: event.data,
+      room_id: roomId,
+      current_time: player.current.getCurrentTime(),
+    });
   };
   return (
     <div className="flex overflow-hidden h-dvh w-full  items-center text-white text-1xl md:text-2xl">
@@ -241,45 +238,51 @@ export default function Room({ socket }) {
             Play
           </button>
         </div>
-        
-       {/*  chat section */}
 
-            <Chat username={username} socket={socket}/>
-        
+        {/*  chat section */}
 
-
+        <Chat username={username} socket={socket} />
       </div>
-
-
-         {/* ERROR */}
-
-      {error && <div className="fixed h-dvh w-full bg-gray-900 flex flex-col items-center justify-center">
-        <p>Room Not Found ⚠️</p>
-        <p className="text-[15px]">Please check the room ID or <font color="red">Refresh the page.</font></p>
+      {/* ERROR */}
+      {error && (
+        <div className="fixed h-dvh w-full bg-gray-900 flex flex-col items-center justify-center">
+          <p>Room Not Found ⚠️</p>
+          <p className="text-[15px]">
+            Please check the room ID or{" "}
+            <font color="red">Refresh the page.</font>
+          </p>
         </div>
-      }
-
+      )}
       {/* loading screen */}
       {loading && (
         <div className="fixed h-dvh w-full bg-gray-900 flex items-center flex-col gap-4 justify-center">
           <div className="wheel p-3 bg-transparent border-5 border-t-amber-50 rounded-full animate-spin border-transparent"></div>
-          <p className='text-white'>Please wait</p>
+          <p className="text-white">Please wait</p>
         </div>
       )}
-
       {/* Enter null user name */}
-      {usernull && <div className="fixed h-dvh w-full bg-gray-900 flex items-center flex-col gap-4 justify-center">
-
-        <div className="flex flex-col gap-7  items-center justify-center">
-          
-        <h1 className="md:text-4xl text-2xl text-white maya">Enter Name</h1>
-        <input type="text" className="border text-black border-gray-950 md:text-2xl bg-white outline-0  ps-3 pe-3 w-70 py-2" placeholder="Enter name" value={crname} onChange={(e)=>{
-                setcrname(e.target.value)
-            }}/>
-            <button className="bg-gray-950 text-white text-2xl w-70 py-3 cursor-pointer" onClick={fillnull}>Join</button>
-      </div>
-      </div>}
-
+      {usernull && (
+        <div className="fixed h-dvh w-full bg-gray-900 flex items-center flex-col gap-4 justify-center">
+          <div className="flex flex-col gap-7  items-center justify-center">
+            <h1 className="md:text-4xl text-2xl text-white maya">Enter Name</h1>
+            <input
+              type="text"
+              className="border text-black border-gray-950 md:text-2xl bg-white outline-0  ps-3 pe-3 w-70 py-2"
+              placeholder="Enter name"
+              value={crname}
+              onChange={(e) => {
+                setcrname(e.target.value);
+              }}
+            />
+            <button
+              className="bg-gray-950 text-white text-2xl w-70 py-3 cursor-pointer"
+              onClick={fillnull}
+            >
+              Join
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
