@@ -191,7 +191,7 @@ export default function Room({ socket }) {
       <div className="md:w-[80%] w-full flex  flex-col items-center md:justify-center justify-between self-baseline  md:p-3">
         {/* roomId */}
 
-        <div className="border-b-gray-950 border-2 border-t-0 border-l-0 border-r-0 px-2 w-full flex items-center md:justify-center justify-between">
+        <div className="header border-b-gray-950 border-2 border-t-0 border-l-0 border-r-0 px-2 w-full flex items-center md:justify-center justify-between">
           <div
             className="text-2xl md:hidden bg-gray-950 h-5 p-4 w-5 rounded-[50%] flex items-center justify-center"
             onClick={navside}

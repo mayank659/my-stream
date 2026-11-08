@@ -8,3 +8,6 @@
   font-variation-settings:
     "GRAD" 0;
 }
+.header{
+  padding-top: env(safe-area-inset-top, 0px);
+}
