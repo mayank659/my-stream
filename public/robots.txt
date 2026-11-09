@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://my-stream-omega.vercel.app/sitemap.xml
